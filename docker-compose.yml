@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres92
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: employee_db
+    ports:
+      - "8009:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./Backend
+    container_name: darshan-onboarding_backend
+    restart: always
+    ports:
+      - "3041:3041"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./Frontend
+    container_name: darshan-onboarding_frontend
+    ports:
+      - "6881:80"
+
+  hr:
+    build: ./HR
+    container_name: darshan-onboarding_hr
+    ports:
+      - "6882:80"
+
+  staff:
+    build: ./Staff.html
+    container_name: darshan-onboarding_staff
+    ports:
+      - "6883:80"
+
+volumes:
+  postgres_data:
+
